@@ -51,6 +51,41 @@ namespace ShopWebsite.Areas.Admin.Controllers
             return View(category);
         }
 
-        
+        public async Task<IActionResult> Edit(int id)
+        {
+            Category category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                category.Slug = category.Name.ToLower().Replace(" ", "-");
+
+                var slug = await _context.Categories.Where(x => x.Id != id).FirstOrDefaultAsync(x => x.Slug == category.Slug);
+                if (slug != null)
+                {
+                    ModelState.AddModelError("", "The category already exists.");
+                    return View(category);
+                }
+
+                _context.Update(category);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The category has been edited!";
+
+                return RedirectToAction("Edit");
+            }
+            return View(category);
+        }
     }
 }
