@@ -30,23 +30,26 @@ namespace ShopWebsite.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var slug = page.Title.Replace(" ", "-").ToLower();
+                page.Slug = page.Title.ToLower().Replace(" ", "-");
+                page.Sorting = 100;
 
-                var checkSlug = await _context.Pages.FirstOrDefaultAsync(x => x.Slug == slug);
+                var slug = await _context.Pages.FirstOrDefaultAsync(x => x.Slug == page.Slug);
 
-                if (checkSlug == null)
+                if (slug != null)
                 {
-                    page.Slug = slug;
-                    await _context.AddAsync(page);
+                    ModelState.AddModelError("", "The title already exists");
+                    return View(page);
                 }
-                else
-                {
-                    return View();
-                }
+
+                _context.Add(page);
                 await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The page has been created";
+
+                return RedirectToAction("Index");
             }
 
-            return View();
+            return View(page);
         }
 
 
@@ -62,10 +65,58 @@ namespace ShopWebsite.Areas.Admin.Controllers
         }
         public IActionResult Create() => View();
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-
+            var page = await _context.Pages.FindAsync(id);
+            if (page == null)
+            {
+                return NotFound();
+            }
+            return View(page);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Page page)
+        {
+            if (ModelState.IsValid)
+            {
+                page.Slug = page.Id == 1 ? "home" : page.Title.ToLower().Replace(" ", "-");
+
+                var slug = await _context.Pages.Where(x => x.Id != page.Id).FirstOrDefaultAsync(x => x.Slug == page.Slug);
+
+                if (slug != null)
+                {
+                    ModelState.AddModelError("", "The page already exists.");
+                    return View(page);
+                }
+
+                _context.Update(page);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "The page has been edited";
+
+                return RedirectToAction("Edit");
+            }
+            return View(page);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            Page page = await _context.Pages.FindAsync(id);
+            if (page == null)
+            {
+                TempData["Error"] = "The page does not exist";
+            }
+            else
+            {
+                _context.Pages.Remove(page);
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["Success"] = "The page has been deleted";
+
+            return RedirectToAction("Index");
+        }
     }
 }
