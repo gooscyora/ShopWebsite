@@ -15,6 +15,7 @@ namespace ShopWebsite.Models
         [Required, MinLength(4, ErrorMessage = "Minimum length is 4")]
         public string Description { get; set; }
         public int Price { get; set; }
+        [Display(Name = "Car Type")]
 
         public int CarTypeId { get; set; }
 
