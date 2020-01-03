@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopWebsite.Models
@@ -23,5 +24,8 @@ namespace ShopWebsite.Models
 
         [ForeignKey("CarTypeId")]
         public virtual CarType CarType { get; set; }
+
+        [NotMapped] //Saving files locally
+        public IFormFile ImageUpload { get; set; }
     }
 }
