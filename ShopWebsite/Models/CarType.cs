@@ -2,7 +2,7 @@
 
 namespace ShopWebsite.Models
 {
-    public class Category
+    public class CarType
     {
         public int Id { get; set; }
         [Required, MinLength(2, ErrorMessage = "Minimum length is 2")]

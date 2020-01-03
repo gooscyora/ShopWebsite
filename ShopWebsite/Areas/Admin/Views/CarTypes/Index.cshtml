@@ -1,18 +1,18 @@
-﻿@model IEnumerable<Category>
+﻿@model IEnumerable<CarType>
 
 @{
-    ViewData["Title"] = "Categories";
+    ViewData["Title"] = "Car types";
 }
 
-<h1>Categories</h1>
+<h1>Car Types</h1>
 
-<a asp-controller="Categories" asp-action="Create">Create New</a>
+<a asp-controller="Types" asp-action="Create">Create New</a>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                Name
+                Type
             </th>
             <th>
                 Slug
@@ -31,9 +31,9 @@
                     @Html.DisplayFor(modelItem => item.Slug)
                 </td>
                 <td>
-                    <a asp-controller="Categories" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-controller="Categories" asp-action="Details">Details</a>|
-                    <a id="confirmDeletion" asp-controller="Categories" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-controller="CarTypes" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-controller="CarTypes" asp-action="Details">Details</a>|
+                    <a id="confirmDeletion" asp-controller="CarTypes" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
