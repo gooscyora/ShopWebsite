@@ -25,6 +25,8 @@ namespace ShopWebsite.Areas.Admin.Controllers
         }
 
         //GET admin/cars
+        [Route("")]
+        [Route("Admin/Cars/{page?}")]
         public async Task<IActionResult> Index(int page = 1)
         {
             PagingViewModel cars = new PagingViewModel()
@@ -119,6 +121,17 @@ namespace ShopWebsite.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
 
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            Car car = await _context.Cars.Include(c => c.CarType).FirstOrDefaultAsync(x => x.Id == id);
+            //if (car == null)
+            //{
+            //    return NotFound();
+            //}
+
+            return View(car);
         }
     }
 

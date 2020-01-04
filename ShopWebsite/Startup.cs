@@ -50,32 +50,32 @@ namespace ShopWebsite
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+            name: "default",
+        pattern: "{area=exists}/{controller=Pages}/{action=Index}/{id?}"
+        );
+
+                endpoints.MapControllerRoute(
             name: "carPagination",
-        pattern: "{area:exists}/{controller=Home}/{page?}",
-            defaults: new { action = "Index" }
-               );
+        pattern: "{area=Admin}/{controller=Home}/{action=Index}");
+        //,
+        //    defaults: new { action = "Index" }
+        //       );
 
-                endpoints.MapControllerRoute(
-            name: "carPaginationWithIndex",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{page?}"
-               );
+                //        endpoints.MapControllerRoute(
+                //    name: "carPaginationWithIndex",
+                //pattern: "{area:exists}/{controller=Home}/{action=Index}/{page?}"
+                //       );
+
+                //        endpoints.MapControllerRoute(
+                //   name: "areas",
+                //   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id}"
+                //      );
 
 
-                endpoints.MapControllerRoute(
-            name: "temporary",
-        pattern: "",
-            defaults: new { area="Admin",controller = "Cars", action = "Index" }
-               );
-
-
-                endpoints.MapControllerRoute(
-           name: "areas",
-           pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-              );
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                //        endpoints.MapControllerRoute(
+                //            name: "default2",
+                //            pattern: "{controller=Home}/{action=Index}/{id?}");
+                //    });
             });
         }
     }
