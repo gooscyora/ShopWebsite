@@ -5,6 +5,7 @@ namespace ShopWebsite.Infrastructure
 {
     public class ShopDbContext : DbContext
     {
+        
         public ShopDbContext(DbContextOptions<ShopDbContext> options)
             : base(options)
         {

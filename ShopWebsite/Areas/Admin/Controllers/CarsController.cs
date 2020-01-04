@@ -126,11 +126,68 @@ namespace ShopWebsite.Areas.Admin.Controllers
         public async Task<IActionResult> Details(int id)
         {
             Car car = await _context.Cars.Include(c => c.CarType).FirstOrDefaultAsync(x => x.Id == id);
-            //if (car == null)
-            //{
-            //    return NotFound();
-            //}
+            if (car == null)
+            {
 
+                return NotFound();
+            }
+
+            return View(car);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var car = await _context.Cars.FindAsync(id);
+
+            if (car == null)
+            {
+                TempData["Error"] = "This car does not exist";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.CarTypeId = new SelectList(_context.CarTypes.OrderBy(x => x.Sorting), "Id", "Name");
+
+            return View(car);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Car car)
+        {
+            if (ModelState.IsValid)
+            {
+                if (car.ImageUpload != null)
+                {
+                    string uploadsDir = Path.Combine(webHostEnvironment.WebRootPath, "static/cars");
+
+                    if (!string.Equals(car.Image, "noimage.png"))
+                    {
+                        string oldImagePath = Path.Combine(uploadsDir, car.Image);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+
+                        }
+                    }
+
+                    //GUID is giving unique ID
+                    string imageName = Guid.NewGuid().ToString() + "_" + car.ImageUpload.FileName;
+                    string filePath = Path.Combine(uploadsDir, imageName);
+                    FileStream fs = new FileStream(filePath, FileMode.Create);
+                    await car.ImageUpload.CopyToAsync(fs);
+                    fs.Close();
+                    car.Image = imageName;
+                }
+
+                _context.Update(car);
+
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Car has been successfully edited";
+
+                return RedirectToAction("Index");
+            }
+            ViewBag.CarTypeId = new SelectList(_context.CarTypes.OrderBy(x => x.Sorting), "Id", "Name");
             return View(car);
         }
     }
