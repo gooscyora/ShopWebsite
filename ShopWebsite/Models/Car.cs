@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ShopWebsite.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,8 +11,8 @@ namespace ShopWebsite.Models
 
         [Required, MinLength(2, ErrorMessage = "Minimum length is 2")]
         public string Model { get; set; }
-
-        public string Slug { get; set; }
+        [Required]
+        public int Year { get; set; }
 
         [Required, MinLength(4, ErrorMessage = "Minimum length is 4")]
         public string Description { get; set; }
@@ -23,8 +24,10 @@ namespace ShopWebsite.Models
         public string Image { get; set; }
 
         [ForeignKey("CarTypeId")]
+        [Range(1, 100, ErrorMessage = "Car type is required.")]
         public virtual CarType CarType { get; set; }
 
+        [FileExtension]
         [NotMapped] //Saving files locally
         public IFormFile ImageUpload { get; set; }
     }

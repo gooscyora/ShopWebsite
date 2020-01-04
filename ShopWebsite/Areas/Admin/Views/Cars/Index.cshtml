@@ -1,19 +1,70 @@
-﻿@model IEnumerable<ShopWebsite.Models.Car>
+﻿@model ShopWebsite.ViewModels.PagingViewModel
+
 
 @{
     ViewData["Title"] = "Cars";
 }
 
-<h1>Index</h1>
+<h1>Cars</h1>
+
+@{
+    ViewBag.Title = "Cars";
+}
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<ul class="justify-content-center nav mb-3">
+
+    @if (Model.PagingHelper.CurrentPage > 1)
+    {
+        <li class="nav-item">
+            <a type="button" class="btn-sm btn-light nav-link" asp-controller="Cars" asp-action="Index" asp-route-page="1">
+                First
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a type="button" class="btn-sm btn-light disabled nav-link" asp-controller="Cars" asp-action="Index" asp-route-page="1">First</a>
+        </li>
+
+    }
+
+
+    @for (int i = 1; i <= Model.PagingHelper.TotalPages; i++)
+    {
+        <li class="nav-item">
+            <a type="button" class="btn-sm btn-light nav-link @(i == Model.PagingHelper.CurrentPage ? "active" : "" )" asp-controller="Cars" asp-action="Index" asp-route-page="@i">
+                @i
+            </a>
+        </li>
+    }
+
+    @if (Model.PagingHelper.CurrentPage != Model.PagingHelper.TotalPages)
+    {
+        <li class="nav-item">
+            <a type="button" class="btn-sm btn-light nav-link" asp-controller="Cars" asp-action="Index" asp-route-page="@Model.PagingHelper.TotalPages">
+                Last
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a type="button" class="btn-sm btn-light disabled nav-link" asp-controller="Cars" asp-action="Index" asp-route-page="Model.PagingHelper.TotalPages">
+                Last
+            </a>
+        </li>
+    }
+
+</ul>
 <table class="table">
     <thead>
         <tr>
             <th>
-               Model
+                Model
             </th>
             <th>
                 Description
@@ -28,26 +79,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model._contextPaging)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

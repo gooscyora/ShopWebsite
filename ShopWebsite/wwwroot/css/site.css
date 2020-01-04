@@ -72,3 +72,8 @@ body {
 a:hover{
     opacity: .2 !important;
 }
+ul li {
+    -moz-user-select: -moz-none;
+    user-select: none;
+    cursor: default;
+}

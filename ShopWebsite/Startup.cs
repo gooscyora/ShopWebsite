@@ -20,6 +20,7 @@ namespace ShopWebsite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllersWithViews();
 
             services.AddDbContext<ShopDbContext>(options =>
@@ -49,9 +50,29 @@ namespace ShopWebsite
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-            name: "areas",
-            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            name: "carPagination",
+        pattern: "{area:exists}/{controller=Home}/{page?}",
+            defaults: new { action = "Index" }
                );
+
+                endpoints.MapControllerRoute(
+            name: "carPaginationWithIndex",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{page?}"
+               );
+
+
+                endpoints.MapControllerRoute(
+            name: "temporary",
+        pattern: "",
+            defaults: new { area="Admin",controller = "Cars", action = "Index" }
+               );
+
+
+                endpoints.MapControllerRoute(
+           name: "areas",
+           pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+              );
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
