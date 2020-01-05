@@ -50,16 +50,18 @@ namespace ShopWebsite
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-            name: "default",
-        pattern: "{area=exists}/{controller=Pages}/{action=Index}/{id?}"
-        );
+                    "pages",
+             "{slug?}",
+                    defaults: new { controller = "Pages", action = "Page" }
+            );
 
                 endpoints.MapControllerRoute(
-            name: "carPagination",
-        pattern: "{area=Admin}/{controller=Home}/{action=Index}");
-        //,
-        //    defaults: new { action = "Index" }
-        //       );
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                   );
+                //,
+                //    defaults: new { action = "Index" }
+                //       );
 
                 //        endpoints.MapControllerRoute(
                 //    name: "carPaginationWithIndex",

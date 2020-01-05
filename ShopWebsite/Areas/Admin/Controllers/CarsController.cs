@@ -25,7 +25,6 @@ namespace ShopWebsite.Areas.Admin.Controllers
         }
 
         //GET admin/cars
-        [Route("")]
         [Route("Admin/Cars/{page?}")]
         public async Task<IActionResult> Index(int page = 1)
         {
@@ -190,6 +189,8 @@ namespace ShopWebsite.Areas.Admin.Controllers
             ViewBag.CarTypeId = new SelectList(_context.CarTypes.OrderBy(x => x.Sorting), "Id", "Name");
             return View(car);
         }
+
+
     }
 
 }
