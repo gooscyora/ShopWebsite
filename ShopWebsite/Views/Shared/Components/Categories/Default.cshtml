@@ -1,0 +1,10 @@
+﻿@model IEnumerable<CarType>
+
+<nav class="nav flex-column">
+    @foreach (var item in Model)
+    {
+
+        <a asp-action ="CarsByType" asp-controller="Cars" asp-route-typeSlug="@item.Name" class="nav-link">@item.Name</a>
+
+    }
+</nav>
