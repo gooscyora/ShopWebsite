@@ -47,8 +47,10 @@ namespace ShopWebsite.Controllers
             }
 
             HttpContext.Session.SetJson("Cart", cart);
+            if (HttpContext.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+                return RedirectToAction("Index");
 
-            return RedirectToAction("Index");
+            return ViewComponent("SmallCart");
         }
 
         public IActionResult Decrease(int id)
@@ -102,7 +104,7 @@ namespace ShopWebsite.Controllers
             HttpContext.Session.Remove("Cart");
 
 
-            return RedirectToAction("Index");
+            return Redirect(Request.Headers["Referer"].ToString());
 
         }
     }
