@@ -1,0 +1,51 @@
+﻿@model ShopWebsite.ViewModels.PagingViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row">
+    @foreach (var item in Model._contextPaging)
+    {
+        <div class="col-4">
+            <img src="~/static/cars/@item.Image"  class="img-fluid" alt="" />
+            <div>
+                @Html.Raw(item.Description)
+            </div>
+            <p>
+                @item.Price.ToString("C2")
+            </p>
+            <p>
+                <a href="#" class="btn btn-primary">Add to cart</a>
+            </p>
+        </div>
+    }
+    <ul class="nav">
+        <li class="nav-item">
+            <a type="button" class="btn-sm btn-light
+                       @(Model.PagingHelper.CurrentPage > 1 ? "" : "disabled") nav-link"
+               asp-controller="Cars" asp-action="CarsByType" asp-route-page="1">First</a>
+        </li>
+        @for (int i = 1; i <= Model.PagingHelper.TotalPages; i++)
+        {
+            <li class="nav-item">
+                <a type="button"
+                   class="btn-sm btn-light nav-link @(i == Model.PagingHelper.CurrentPage ?
+                        "active" : "")"
+                   asp-controller="Cars" asp-action="CarsByType" asp-route-page="@i">
+                    @i
+                </a>
+            </li>
+        }
+        <li class="nav-item">
+            <a type="button"
+               class="btn-sm btn-light nav-link
+                       @(Model.PagingHelper.CurrentPage != Model.PagingHelper.TotalPages ?
+                        "" : "disabled")"
+               asp-controller="Cars" asp-action="CarsByType" asp-route-page="@Model.PagingHelper.TotalPages">
+                Last
+            </a>
+        </li>
+    </ul>
+</div>
