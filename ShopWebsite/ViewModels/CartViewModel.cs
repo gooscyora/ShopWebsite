@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using ShopWebsite.Models;
+using System.Collections.Generic;
 
-namespace ShopWebsite.Models
+namespace ShopWebsite.ViewModels
 {
     public class CartViewModel
     {
