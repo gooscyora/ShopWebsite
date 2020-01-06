@@ -16,6 +16,7 @@ namespace ShopWebsite.Controllers
         {
             this._context = _context;
         }
+
         [Route("Cars/{typeSlug}")]
         [Route("Cars/{typeSlug}/{page}")]
         public async Task<IActionResult> CarsByType(string typeSlug, int page = 1)
