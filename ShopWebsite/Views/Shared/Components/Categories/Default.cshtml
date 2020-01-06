@@ -1,10 +1,15 @@
 ﻿@model IEnumerable<CarType>
 
-<nav class="nav flex-column">
+<ul class="nav flex-column">
+    <li class="list-group-item @(ViewContext.RouteData.Values["typeSlug"] == "Sedan" ? "active" : ""));">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Index">All Cars</a>
+    </li>
     @foreach (var item in Model)
     {
+        <li class="list-group-item">
+            <a asp-action="CarsByType" asp-controller="Cars" asp-route-typeSlug="@item.Name" class="nav-link text-dark">@item.Name</a>
+        </li>
 
-        <a asp-action ="CarsByType" asp-controller="Cars" asp-route-typeSlug="@item.Name" class="nav-link">@item.Name</a>
 
     }
-</nav>
+</ul>

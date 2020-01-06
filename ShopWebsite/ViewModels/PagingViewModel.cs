@@ -6,7 +6,7 @@ namespace ShopWebsite.ViewModels
 {
     public class PagingViewModel
     {
-        public IEnumerable<Car> _contextPaging { get; set; }
+        public IEnumerable<Car> Cars { get; set; }
         public PagingHelper PagingHelper { get; set; }
     }
 }

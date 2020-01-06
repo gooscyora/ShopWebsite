@@ -37,7 +37,7 @@ namespace ShopWebsite.Areas.Admin.Controllers
                     TotalItems = await _context.Cars.CountAsync()
                 }
             };
-            cars._contextPaging = await _context.Cars.OrderBy(x => x.Id).Include(x => x.CarType)
+            cars.Cars = await _context.Cars.OrderBy(x => x.Id).Include(x => x.CarType)
              .Skip((page * cars.PagingHelper.ItemsPerPage) - cars.PagingHelper.ItemsPerPage)
              .Take(cars.PagingHelper.ItemsPerPage).ToListAsync();
             return View(cars);

@@ -35,7 +35,7 @@ namespace ShopWebsite.Controllers
                     TotalItems = await _context.Cars.Where(x => x.CarTypeId == carType.Id).CountAsync()
                 }
             };
-            cars._contextPaging = await _context.Cars.OrderBy(x => x.Id).Include(x => x.CarType)
+            cars.Cars = await _context.Cars.OrderBy(x => x.Id).Include(x => x.CarType)
                 .Where(x => x.CarTypeId == carType.Id)
              .Skip((page * pageSize) - pageSize)
              .Take(pageSize).ToListAsync();
@@ -47,7 +47,7 @@ namespace ShopWebsite.Controllers
         [Route("Cars/{page:int}")]
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 6;
+            int pageSize = 12;
             PagingViewModel cars = new PagingViewModel()
             {
                 PagingHelper = new PagingHelper
@@ -57,7 +57,7 @@ namespace ShopWebsite.Controllers
                     TotalItems = await _context.Cars.CountAsync()
                 }
             };
-            cars._contextPaging = await _context.Cars.OrderBy(x => x.Id).Include(x => x.CarType)
+            cars.Cars = await _context.Cars.OrderBy(x => x.Id).Include(x => x.CarType)
              .Skip((page * pageSize) - pageSize)
              .Take(pageSize).ToListAsync();
 

@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="display-4 pb-5">All Products</h1>
+<h1 class="display-4 pb-5">All cars</h1>
 
-<div class="row">
-    @foreach (var item in Model._contextPaging)
+<div class="row text-center">
+    @foreach (var item in Model.Cars)
     {
         <div class="col-4">
-            <img src="~/static/cars/@item.Image" class="img-fluid" alt="" />
+            <img src="~/static/cars/@item.Image" class="img-fluid img-thumbnail" alt="" />
             <h4>@item.Model</h4>
             <div>
                 @Html.Raw(item.Description)
