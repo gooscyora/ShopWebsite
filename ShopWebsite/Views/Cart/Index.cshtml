@@ -1,0 +1,39 @@
+﻿@model CartViewModel
+@{
+    ViewData["Title"] = "Cart Overview";
+}
+
+<h1>Cart Overview</h1>
+<table class="table">
+    <tr>
+        <th>Car</th>
+        <th>Quantity</th>
+        <th></th>
+        <th>Price</th>
+        <th>Total</th>
+    </tr>
+    @foreach (var item in Model.CartItems)
+    {
+        <tr>
+            <td>@item.CarModel</td>
+            <td>@item.Quantity</td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-action="Add" asp-route-id="@item.CarId">+</a>
+                <a class="btn btn-sm btn-success" asp-action="Decrease" asp-route-id="@item.CarId">-</a>
+                <a class="btn btn-sm btn-danger" asp-action="Remove" asp-route-id="@item.CarId">Remove</a>
+            </td>
+            <td>@item.Price.ToString("C2")</td>
+            <td>@Model.CartItems.Where(x => x.CarId == item.CarId).Sum(x => x.Quantity * x.Price).ToString("C0")</td>
+        </tr>
+    }
+    <tr>
+        <td class="text-right" colspan="4">Grand Total: @Model.GrandTotal.ToString("C0")</td>
+    </tr>
+    <tr>
+        <td class="text-right" colspan="4">
+            <a asp-action="Clear" class="btn btn-danger">Clear Cart</a>
+            <a href="#" class="btn btn-primary">Check Cart</a>
+        </td>
+    </tr>
+
+</table>
