@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopWebsite.Infrastructure;
 using ShopWebsite.Models;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ShopWebsite.Controllers
 {
+    [Authorize]
     public class CarsController : Controller
     {
         private readonly ShopDbContext _context;
@@ -17,8 +19,6 @@ namespace ShopWebsite.Controllers
             this._context = _context;
         }
 
-        [Route("Cars/{typeSlug}")]
-        [Route("Cars/{typeSlug}/{page}")]
         public async Task<IActionResult> CarsByType(string typeSlug, int page = 1)
         {
             CarType carType = await _context.CarTypes.Where(x => x.Slug == typeSlug).FirstOrDefaultAsync();
@@ -44,8 +44,6 @@ namespace ShopWebsite.Controllers
             return View(cars);
         }
 
-        [Route("Cars")]
-        [Route("Cars/{page:int}")]
         public async Task<IActionResult> Index(int page = 1)
         {
             int pageSize = 12;
@@ -64,6 +62,7 @@ namespace ShopWebsite.Controllers
 
             return View(cars);
         }
+
 
     }
 }

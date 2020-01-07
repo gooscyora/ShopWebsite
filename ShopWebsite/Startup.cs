@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopWebsite.Infrastructure;
+using ShopWebsite.Models;
 
 namespace ShopWebsite
 {
@@ -21,10 +23,23 @@ namespace ShopWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSession();
+            services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
 
             services.AddDbContext<ShopDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("ShopDbContext")));
+
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+
+            })
+                .AddEntityFrameworkStores<ShopDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,14 +62,22 @@ namespace ShopWebsite
 
             app.UseSession();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                                    "pages",
-                                    "{slug?}",
-                                    defaults: new { controller = "Pages", action = "Page" }
+                    "pages",
+                    "{slug?}",
+                    defaults: new { controller = "Pages", action = "Page" }
+            );
+                endpoints.MapControllerRoute(
+                                    "cars",
+                                    "cars/{typeSlug}",
+                                    defaults: new { controller = "Cars", action = "CarsByType" }
                             );
 
                 endpoints.MapControllerRoute(
@@ -65,19 +88,6 @@ namespace ShopWebsite
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                //,
-                //    defaults: new { action = "Index" }
-                //       );
-
-                //        endpoints.MapControllerRoute(
-                //    name: "carPaginationWithIndex",
-                //pattern: "{area:exists}/{controller=Home}/{action=Index}/{page?}"
-                //       );
-
-                //        endpoints.MapControllerRoute(
-                //   name: "areas",
-                //   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id}"
-                //      );
 
 
             });

@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopWebsite.Infrastructure;
 using ShopWebsite.Models;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopWebsite.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Area("Admin")]
     public class CarTypesController : Controller
     {
