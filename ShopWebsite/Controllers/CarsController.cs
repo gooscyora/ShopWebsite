@@ -46,7 +46,7 @@ namespace ShopWebsite.Controllers
 
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 12;
+            int pageSize = 4;
             PagingViewModel cars = new PagingViewModel()
             {
                 PagingHelper = new PagingHelper

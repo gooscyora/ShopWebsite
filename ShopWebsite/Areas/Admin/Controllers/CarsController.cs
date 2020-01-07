@@ -39,6 +39,11 @@ namespace ShopWebsite.Areas.Admin.Controllers
                     TotalItems = await _context.Cars.CountAsync()
                 }
             };
+            if (page > cars.PagingHelper.TotalPages)
+            {
+                TempData["Error"] = "This page does not exist.";
+                page = 1;
+            }
             cars.Cars = await _context.Cars.OrderBy(x => x.Id).Include(x => x.CarType)
              .Skip((page * cars.PagingHelper.ItemsPerPage) - cars.PagingHelper.ItemsPerPage)
              .Take(cars.PagingHelper.ItemsPerPage).ToListAsync();
@@ -100,6 +105,7 @@ namespace ShopWebsite.Areas.Admin.Controllers
             if (car == null)
             {
                 TempData["Error"] = "Car does not exist";
+
             }
             else
             {
